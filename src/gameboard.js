@@ -30,7 +30,7 @@ export default class Gameboard {
 
   receiveAttack(x, y) {
     this.array[x][y].shoot();
-    const index = this.array[x][y].shipIndex;
-    if (index) this.ships[index].hit();
+    const index = this.array[x][y].shipIndex;    
+    if (index !== null) this.ships[index].hit();
   }
 }

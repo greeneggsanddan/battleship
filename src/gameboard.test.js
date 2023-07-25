@@ -5,6 +5,7 @@ describe('board methods', () => {
 
   beforeEach(() => {
     board = new Gameboard();
+    board.placeShip(5, 5, 3, false);
   });
 
   test('board is created', () => {
@@ -16,7 +17,13 @@ describe('board methods', () => {
   });
 
   test('ship placed on board', () => {
-    board.placeShip(5, 5, 3, false);
+    expect(board.array[5][5].shipIndex).toBe(0);
     expect(board.array[6][5].shipIndex).toBe(0);
+    expect(board.array[7][5].shipIndex).toBe(0);
   });
+
+  test('ship receives attack', () => {
+    board.receiveAttack(5, 5);
+    expect(board.ships[0].hits).toBe(1);
+  })
 });
