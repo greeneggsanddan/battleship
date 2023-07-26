@@ -26,4 +26,12 @@ describe('board methods', () => {
     board.receiveAttack(5, 5);
     expect(board.ships[0].hits).toBe(1);
   })
+
+  test('ship cannot overlap with another ship', () => {
+    expect(board.checkLegality(6, 4, 3, true)).toBe(false);
+  })
+
+  test('ship cannot be placed out of bounds', () => {
+    expect(board.checkLegality(9, 9, 3, false)).toBe(false);
+  })
 });
