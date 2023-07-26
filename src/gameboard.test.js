@@ -27,6 +27,13 @@ describe('board methods', () => {
     expect(board.ships[0].hits).toBe(1);
   })
 
+  test('board keeps track of sunk ships', () => {
+    board.receiveAttack(5, 5);
+    board.receiveAttack(6, 5);
+    board.receiveAttack(7, 5);
+    expect(board.shipsSunk).toBe(1);
+  });
+
   test('ship cannot overlap with another ship', () => {
     expect(board.checkLegality(6, 4, 3, true)).toBe(false);
   })

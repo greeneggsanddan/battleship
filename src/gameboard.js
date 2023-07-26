@@ -5,6 +5,7 @@ export default class Gameboard {
   constructor() {
     this.array = this.createBoard();
     this.ships = [];
+    this.shipsSunk = 0;
   }
 
   createBoard() { // eslint-disable-line
@@ -35,10 +36,13 @@ export default class Gameboard {
   receiveAttack(x, y) {
     this.array[x][y].shoot();
     const index = this.array[x][y].shipIndex;    
-    if (index !== null) this.ships[index].hit();
+    if (index !== null) {
+      this.ships[index].hit();
+      if (this.ships[index].isSunk()) this.shipsSunk += 1;
+    }
   }
 
-  checkLegality(x, y, length, isHorizontal) {
+  checkLegality(x, y, length = 1, isHorizontal = true) {
     const shipCoordinates = [];
     let isLegal = true;
 

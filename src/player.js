@@ -25,6 +25,20 @@ export default class Player {
     });
   }
 
+  shootRandom() { // should the opponent or the player do the shooting?
+    let x;
+    let y;
+    let isLegal = false;
+
+    while (!isLegal) {
+      x = Math.floor(Math.random() * 10);
+      y = Math.floor(Math.random() * 10);
+      isLegal = this.board.checkLegality(x, y);
+    }
+
+    this.board.receiveAttack(x, y);
+  }
+
 }
 
 // playerOne.receiveAttack()
