@@ -1,5 +1,3 @@
-import Gameboard from "./gameboard";
-
 const SHIP_LENGTHS = [5, 4, 3, 3, 2];
 
 export default class Player {
@@ -37,7 +35,8 @@ export default class Player {
       isShot = this.enemyBoard.array[x][y].isShot;
     }
 
-    this.enemyBoard.receiveAttack(x, y);
+    const shipIndex = this.enemyBoard.receiveAttack(x, y);
+    return shipIndex;
   }
 
 }

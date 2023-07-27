@@ -39,7 +39,9 @@ export default class Gameboard {
     if (index !== null) {
       this.ships[index].hit();
       if (this.ships[index].isSunk()) this.shipsSunk += 1;
+      return index;
     }
+    return null;
   }
 
   checkLegality(x, y, length, isHorizontal) {
