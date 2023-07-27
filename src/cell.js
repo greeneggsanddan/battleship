@@ -1,7 +1,7 @@
 export default class Cell {
-  constructor(shipIndex = null, isShot = false) {
-    this.shipIndex = shipIndex;
-    this.isShot = isShot;
+  constructor() {
+    this.shipIndex = null;
+    this.isShot = false;
   }
 
   shoot() {

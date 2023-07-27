@@ -1,14 +1,45 @@
 import Player from "./player";
+import Gameboard from "./gameboard";
 
 describe('player methods', () => {
-  let player;
+  let boardOne;
+  let boardTwo;
+  let playerOne;
+  let playerTwo;
+
 
   beforeEach(() => {
-    player = new Player();
+    boardOne = new Gameboard();
+    boardTwo = new Gameboard();
+    playerOne = new Player(boardOne, boardTwo);
+    playerTwo = new Player(boardTwo, boardOne);
   });
 
   test('place all five ships', () => {
-    player.randomizeShips();
-    expect(player.board.ships.length).toBe(5);
+    playerOne.randomizeShips();
+    expect(playerOne.board.ships.length).toBe(5);
+  });
+
+  test('random shots will not overlap', () => {
+    let counter = 0;
+
+    playerOne.shootRandom();
+    playerOne.shootRandom();
+    playerOne.shootRandom();
+    playerOne.shootRandom();
+    playerOne.shootRandom();
+    playerOne.shootRandom();
+    playerOne.shootRandom();
+    playerOne.shootRandom();
+    playerOne.shootRandom();
+    playerOne.shootRandom();
+
+    playerTwo.board.array.forEach(row => {
+      row.forEach(cell => {
+        if (cell.isShot) counter += 1;
+      })
+    });
+
+    expect(counter).toBe(10);
   });
 });

@@ -42,7 +42,7 @@ export default class Gameboard {
     }
   }
 
-  checkLegality(x, y, length = 1, isHorizontal = true) {
+  checkLegality(x, y, length, isHorizontal) {
     const shipCoordinates = [];
     let isLegal = true;
 

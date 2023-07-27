@@ -3,8 +3,9 @@ import Gameboard from "./gameboard";
 const SHIP_LENGTHS = [5, 4, 3, 3, 2];
 
 export default class Player {
-  constructor() {
-    this.board = new Gameboard();
+  constructor(board, enemyBoard) {
+    this.board = board;
+    this.enemyBoard = enemyBoard;
   }
 
   randomizeShips() {
@@ -28,17 +29,15 @@ export default class Player {
   shootRandom() { // should the opponent or the player do the shooting?
     let x;
     let y;
-    let isLegal = false;
+    let isShot = true;
 
-    while (!isLegal) {
+    while (isShot) {
       x = Math.floor(Math.random() * 10);
       y = Math.floor(Math.random() * 10);
-      isLegal = this.board.checkLegality(x, y);
+      isShot = this.enemyBoard.array[x][y].isShot;
     }
 
-    this.board.receiveAttack(x, y);
+    this.enemyBoard.receiveAttack(x, y);
   }
 
 }
-
-// playerOne.receiveAttack()

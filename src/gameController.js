@@ -1,10 +1,15 @@
-const playerOne = new Player();
-const playerTwo = new Player();
-let opponent = playerTwo;
+import Gameboard from "./gameboard";
+import Player from "./player";
+
+const boardOne = new Gameboard();
+const boardTwo = new Gameboard();
+const playerOne = new Player(boardOne, boardTwo);
+const playerTwo = new Player(boardTwo, boardOne);
+let activePlayer = playerOne;
 
 function playRound(x, y) {
   // make sure it's a legal move
-  opponent.board.receiveAttack(x, y);
+  activePlayer.enemyBoard.receiveAttack(x, y);
   // if shipsunk, check if game over
   if (checkGameOver) {
     isGameOver = true;
