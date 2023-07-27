@@ -12,7 +12,6 @@ export function playRound(x, y) {
   // make sure it's a legal move
   const board = activePlayer.enemyBoard;
   const shipIndex = board.receiveAttack(x, y);
-  console.log("🚀 ~ file: gameController.js:15 ~ playRound ~ shipIndex:", shipIndex)
 
   if (shipIndex !== null && board.ships[shipIndex].isSunk()) {
     // you sank my battleship[index]
@@ -22,7 +21,7 @@ export function playRound(x, y) {
   switchPlayerTurn(); // eslint-disable-line
 }
 
-function cpuRound() {
+export function cpuRound() {
   let x;
   let y;
   let isShot = true;
@@ -39,6 +38,10 @@ function cpuRound() {
 function switchPlayerTurn() {
   activePlayer = activePlayer === player ? cpu : player;
   if (activePlayer === cpu) cpuRound();
+}
+
+export function switchPlayerHelper() {
+  activePlayer = activePlayer === player ? cpu : player;
 }
 
 export function getActivePlayer() {

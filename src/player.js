@@ -24,7 +24,7 @@ export default class Player {
     });
   }
 
-  shootRandom() { // should the opponent or the player do the shooting?
+  shootRandom() { // moved to gameController
     let x;
     let y;
     let isShot = true;
