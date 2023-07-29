@@ -45,12 +45,14 @@ button {
   --blue: #728EBD;
   --red: #E64F62;
   --yellow: #FDCC73;
+  --green: #79C199;
 }
 
 body {
   height: 100vh;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 100px;
@@ -63,9 +65,10 @@ body {
   width: 400px;
   height: 400px;
   gap: 2px;
+  border: 2px solid #bbbbbb;
 }
 
-.cell {
+.square {
   background-color: white;
   padding: 8px;
 }
@@ -78,6 +81,10 @@ body {
 
 .ship {
   background-color: var(--blue);
+}
+
+.ship.hidden {
+  background-color: white;
 }
 
 .hit {

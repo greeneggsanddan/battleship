@@ -1,42 +1,42 @@
-// let activePlayer = player;
-// let isGameOver = false;
+import Gameboard from "./gameboard";
+import Player from "./player";
 
-// export function playRound(x, y) {
-//   // make sure it's a legal move
-//   const board = activePlayer.enemyBoard;
-//   const shipIndex = board.receiveAttack(x, y);
+const boardOne = new Gameboard();
+const boardTwo = new Gameboard();
+const human = new Player(boardOne, boardTwo);
+const cpu = new Player(boardTwo, boardOne);
 
-//   if (shipIndex !== null && board.ships[shipIndex].isSunk()) {
-//     // you sank my battleship[index]
-//     if (board.shipsSunk === 5) isGameOver = true;
-//   }
+let isGameOver = false;
 
-//   switchPlayerTurn(); // eslint-disable-line
-// }
+export function playRound(x, y, player = human) {
+  // make sure it's a legal move
+  const board = player.enemyBoard;
+  const shipIndex = board.receiveAttack(x, y);
 
-// export function cpuRound() {
-//   let x;
-//   let y;
-//   let isShot = true;
+  if (shipIndex !== null && board.ships[shipIndex].isSunk()) {
+    // you sank my battleship[index]
+    if (board.shipsSunk === 5) isGameOver = true;
+  }
+}
 
-//   while (isShot) {
-//     x = Math.floor(Math.random() * 10);
-//     y = Math.floor(Math.random() * 10);
-//     isShot = activePlayer.enemyBoard.array[x][y].isShot;
-//   }
+export function cpuRound() {
+  let x;
+  let y;
+  let isShot = true;
 
-//   playRound(x, y);
-// }
+  while (isShot) {
+    x = Math.floor(Math.random() * 10);
+    y = Math.floor(Math.random() * 10);
+    isShot = human.board.array[x][y].isShot;
+  }
 
-// function switchPlayerTurn() {
-//   activePlayer = activePlayer === player ? cpu : player;
-//   if (activePlayer === cpu) cpuRound();
-// }
+  console.log(x);
+  console.log(y);
 
-// export function switchPlayerHelper() {
-//   activePlayer = activePlayer === player ? cpu : player;
-// }
+  playRound(x, y, cpu);
+}
 
-// export function getActivePlayer() {
-//   return activePlayer;
-// }
+export function getPlayer(number) {
+  if (number === 1) return human;
+  return cpu;
+}
