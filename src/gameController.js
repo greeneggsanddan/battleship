@@ -16,7 +16,9 @@ export function playRound(x, y, player = human) {
   if (shipIndex !== null && board.ships[shipIndex].isSunk()) {
     // you sank my battleship[index]
     if (board.shipsSunk === 5) isGameOver = true;
+    return shipIndex;
   }
+  return null;
 }
 
 export function cpuRound() {
@@ -29,9 +31,6 @@ export function cpuRound() {
     y = Math.floor(Math.random() * 10);
     isShot = human.board.array[x][y].isShot;
   }
-
-  console.log(x);
-  console.log(y);
 
   playRound(x, y, cpu);
 }

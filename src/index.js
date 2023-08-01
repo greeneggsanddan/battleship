@@ -1,4 +1,4 @@
 import './style.css';
-import { startGame } from './displayController';
+import startGame from './displayController';
 
 startGame();

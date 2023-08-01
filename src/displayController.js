@@ -1,10 +1,8 @@
-// import { playRound } from "./gameController";
 import { getPlayer, playRound, cpuRound } from "./gameController";
 
-export default function createBoard(player, isCPU = false) {
+function createBoard(player, isCPU = false) {
   const board = document.createElement('div');
   board.classList.add('board');
-  if (!isCPU) board.classList.add('human');
 
   for (let i = 0; i < 10; i += 1) {
     for (let j = 0; j < 10; j += 1) {
@@ -17,10 +15,14 @@ export default function createBoard(player, isCPU = false) {
       square.dataset.col = j;
       peg.classList.add('peg');
 
-      if (cell.shipIndex !== null) {
-        square.classList.add('ship');
-        if (isCPU) square.classList.add('hidden');
-      }
+      if (isCPU) square.dataset.ship = cell.shipIndex;
+
+      if (cell.shipIndex !== null && !isCPU) square.classList.add('ship');
+        // Hides the CPU's ships until they are sunk
+        // const isSunk = player.board.ships[cell.shipIndex].isSunk();
+        // if (isCPU && !isSunk) square.classList.add('hidden');
+      // }
+      if (cell.isRevealed) square.classList.add('ship');
       if (cell.isShot) {
         const marker = cell.shipIndex === null ? 'miss' : 'hit';
         peg.classList.add(marker);
@@ -45,19 +47,40 @@ function updateDisplay() {
   body.appendChild(createBoard(cpu, true));
 }
 
-function boardClickHandler(e) {
-  const row = e.target.dataset.row;
-  const col = e.target.dataset.col;
+async function boardClickHandler(e) {
+  // Checks if the event target is the peg
+  let cell;
+  if (e.target.classList.contains('peg')) cell = e.target.parentElement;
+  else cell = e.target;
 
+  const row = cell.dataset.row; // eslint-disable-line
+  const col = cell.dataset.col; // eslint-disable-line
+
+  // Checks that a square was clicked
   if (!row) return;
 
-  playRound(row, col);
+  const sunkShipIndex = playRound(row, col);
   updateDisplay();
-  cpuRound();
-  updateDisplay();
+  if (sunkShipIndex !== null) {
+    setTimeout(() => {
+      const sunkShip = document.querySelectorAll(`[data-ship='${sunkShipIndex}']`);
+      
+      sunkShip.forEach(square => {
+        const squareRow = square.dataset.row;
+        const squareCol = square.dataset.col;
+        const cpu = getPlayer(2);
+
+        cpu.board.array[squareRow][squareCol].reveal();
+        square.classList.add('ship');
+      });
+    }, 100);
+  }
+
+  // cpuRound();
+  // updateDisplay();
 }
 
-export function startGame() {
+export default function startGame() {
   const human = getPlayer(1);
   const cpu = getPlayer(2);
 
@@ -66,6 +89,6 @@ export function startGame() {
 
   updateDisplay();
 
-  const playerBoard = document.querySelector('human');
-  playerBoard.addEventListener('click', boardClickHandler);
+  const body = document.querySelector('body');  // attach the event listener to something else
+  body.addEventListener('click', boardClickHandler);
 }

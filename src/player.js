@@ -23,20 +23,4 @@ export default class Player {
       this.board.placeShip(x, y, shipLength, isHorizontal);
     });
   }
-
-  shootRandom() { // moved to gameController
-    let x;
-    let y;
-    let isShot = true;
-
-    while (isShot) {
-      x = Math.floor(Math.random() * 10);
-      y = Math.floor(Math.random() * 10);
-      isShot = this.enemyBoard.array[x][y].isShot;
-    }
-
-    const shipIndex = this.enemyBoard.receiveAttack(x, y);
-    return shipIndex;
-  }
-
 }
