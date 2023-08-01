@@ -3,18 +3,19 @@ import { getPlayer, playRound, cpuRound } from "./gameController";
 function createBoard(player, isCPU = false) {
   const board = document.createElement('div');
   board.classList.add('board');
-
+  
   for (let i = 0; i < 10; i += 1) {
     for (let j = 0; j < 10; j += 1) {
       const square = document.createElement('div');
       const peg = document. createElement('div');
       const cell = player.board.array[i][j];
-
+      
       square.dataset.row = i;
       square.dataset.col = j;
       square.classList.add('square');
       peg.classList.add('peg');
-
+      
+      if (isCPU) square.classList.add('cpu');
       if (isCPU) square.dataset.ship = cell.shipIndex;
       if (cell.shipIndex !== null && !isCPU) square.classList.add('ship');
       if (cell.isSunk) square.classList.add('ship');
@@ -51,7 +52,7 @@ function boardClickHandler(e) {
   const human = getPlayer(1);
 
   // Checks that a square was clicked and hasn't already been shot
-  if (!row || human.enemyBoard.array[row][col].isShot) return;
+  if (!row || human.enemyBoard.array[row][col].isShot || !cell.classList.contains('cpu')) return;
 
   const sunkShipIndex = playRound(row, col);
   updateDisplay();
