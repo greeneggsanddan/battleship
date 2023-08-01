@@ -10,19 +10,14 @@ function createBoard(player, isCPU = false) {
       const peg = document. createElement('div');
       const cell = player.board.array[i][j];
 
-      square.classList.add('square');
       square.dataset.row = i;
       square.dataset.col = j;
+      square.classList.add('square');
       peg.classList.add('peg');
 
       if (isCPU) square.dataset.ship = cell.shipIndex;
-
       if (cell.shipIndex !== null && !isCPU) square.classList.add('ship');
-        // Hides the CPU's ships until they are sunk
-        // const isSunk = player.board.ships[cell.shipIndex].isSunk();
-        // if (isCPU && !isSunk) square.classList.add('hidden');
-      // }
-      if (cell.isRevealed) square.classList.add('ship');
+      if (cell.isSunk) square.classList.add('ship');
       if (cell.isShot) {
         const marker = cell.shipIndex === null ? 'miss' : 'hit';
         peg.classList.add(marker);
@@ -47,22 +42,22 @@ function updateDisplay() {
   body.appendChild(createBoard(cpu, true));
 }
 
-async function boardClickHandler(e) {
+function boardClickHandler(e) {
   // Checks if the event target is the peg
-  let cell;
-  if (e.target.classList.contains('peg')) cell = e.target.parentElement;
-  else cell = e.target;
+  const cell = e.target.classList.contains('peg') ? e.target.parentElement : e.target;
 
   const row = cell.dataset.row; // eslint-disable-line
   const col = cell.dataset.col; // eslint-disable-line
+  const human = getPlayer(1);
 
-  // Checks that a square was clicked
-  if (!row) return;
+  // Checks that a square was clicked and hasn't already been shot
+  if (!row || human.enemyBoard.array[row][col].isShot) return;
 
   const sunkShipIndex = playRound(row, col);
   updateDisplay();
-  if (sunkShipIndex !== null) {
-    setTimeout(() => {
+
+  setTimeout(() => {
+    if (sunkShipIndex !== null) {
       const sunkShip = document.querySelectorAll(`[data-ship='${sunkShipIndex}']`);
       
       sunkShip.forEach(square => {
@@ -70,14 +65,16 @@ async function boardClickHandler(e) {
         const squareCol = square.dataset.col;
         const cpu = getPlayer(2);
 
-        cpu.board.array[squareRow][squareCol].reveal();
+        cpu.board.array[squareRow][squareCol].sink();
         square.classList.add('ship');
       });
-    }, 100);
-  }
+    }
+  }, 100);
 
-  // cpuRound();
-  // updateDisplay();
+  setTimeout(() => {
+    cpuRound();
+    updateDisplay();
+  }, 500);
 }
 
 export default function startGame() {

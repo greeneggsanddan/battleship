@@ -70,15 +70,16 @@ body {
 
 .square {
   background-color: white;
-  padding: 8px;
-  transition: background-color .75s cubic-bezier(0.25, 0.1, 0.25, 1);
+  padding: 6px;
+  transition: background-color .5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .peg {
   border-radius: 50%;
   height: 100%;
   width: 100%;
-  /* outline: 2px solid white; */
+  background-color: white;
+  border: 2px solid white;
 }
 
 .ship {

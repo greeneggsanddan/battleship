@@ -9,12 +9,10 @@ const cpu = new Player(boardTwo, boardOne);
 let isGameOver = false;
 
 export function playRound(x, y, player = human) {
-  // make sure it's a legal move
   const board = player.enemyBoard;
   const shipIndex = board.receiveAttack(x, y);
 
   if (shipIndex !== null && board.ships[shipIndex].isSunk()) {
-    // you sank my battleship[index]
     if (board.shipsSunk === 5) isGameOver = true;
     return shipIndex;
   }
@@ -38,4 +36,8 @@ export function cpuRound() {
 export function getPlayer(number) {
   if (number === 1) return human;
   return cpu;
+}
+
+export function checkGameOver() {
+  return isGameOver;
 }
