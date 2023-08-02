@@ -1,8 +1,15 @@
-import { getPlayer, playRound, cpuRound } from "./gameController";
+import { getPlayer, playRound, cpuRound, checkGameOver } from "./gameController";
 
 function createBoard(player, isCPU = false) {
+  const boardDiv = document.createElement('div');
+  const boardName = document.createElement('h3');
   const board = document.createElement('div');
+
   board.classList.add('board');
+  boardName.classList.add('name');
+
+  const name = isCPU ? 'CPU\'s' : 'Your';
+  boardName.textContent = `${name} board`;
   
   for (let i = 0; i < 10; i += 1) {
     for (let j = 0; j < 10; j += 1) {
@@ -29,18 +36,21 @@ function createBoard(player, isCPU = false) {
     }
   }
 
-  return board;
+  boardDiv.appendChild(boardName);
+  boardDiv.appendChild(board);
+
+  return boardDiv;
 }
 
 function updateDisplay() {
-  const body = document.querySelector('body');
+  const boards = document.querySelector('.container');
   const human = getPlayer(1);
   const cpu = getPlayer(2);
 
-  body.innerHTML = '';
+  boards.innerHTML = '';
 
-  body.appendChild(createBoard(human));
-  body.appendChild(createBoard(cpu, true));
+  boards.appendChild(createBoard(human));
+  boards.appendChild(createBoard(cpu, true));
 }
 
 function boardClickHandler(e) {
@@ -50,12 +60,17 @@ function boardClickHandler(e) {
   const row = cell.dataset.row; // eslint-disable-line
   const col = cell.dataset.col; // eslint-disable-line
   const human = getPlayer(1);
+  const cpu = getPlayer(2)
 
-  // Checks that a square was clicked and hasn't already been shot
-  if (!row || human.enemyBoard.array[row][col].isShot || !cell.classList.contains('cpu')) return;
+  // Checks that a square is clickable and hasn't already been shot
+  if (!cell.classList.contains('cpu') || human.enemyBoard.array[row][col].isShot || checkGameOver()) return;
 
   const sunkShipIndex = playRound(row, col);
   updateDisplay();
+  // if (checkGameOver()) {
+  //   displayWinner(human);
+  //   return;
+  // }
 
   setTimeout(() => {
     if (sunkShipIndex !== null) {
@@ -64,7 +79,6 @@ function boardClickHandler(e) {
       sunkShip.forEach(square => {
         const squareRow = square.dataset.row;
         const squareCol = square.dataset.col;
-        const cpu = getPlayer(2);
 
         cpu.board.array[squareRow][squareCol].sink();
         square.classList.add('ship');
@@ -75,6 +89,7 @@ function boardClickHandler(e) {
   setTimeout(() => {
     cpuRound();
     updateDisplay();
+    // if (checkGameOver()) displayWinner(cpu);
   }, 500);
 }
 
@@ -87,6 +102,9 @@ export default function startGame() {
 
   updateDisplay();
 
-  const body = document.querySelector('body');  // attach the event listener to something else
-  body.addEventListener('click', boardClickHandler);
+  document.addEventListener('click', boardClickHandler);
+}
+
+function displayWinner(player) {
+
 }
