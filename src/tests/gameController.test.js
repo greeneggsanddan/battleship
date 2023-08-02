@@ -1,4 +1,4 @@
-import { playRound, cpuRound, getPlayer } from "./gameController";
+import { playRound, cpuRound, getPlayer } from "../gameController";
 
 describe('player methods', () => {
   const human = getPlayer(1);

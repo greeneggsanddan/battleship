@@ -1,5 +1,5 @@
-import Player from "./player";
-import Gameboard from "./gameboard";
+import Player from "../player";
+import Gameboard from "../gameboard";
 
 describe('player methods', () => {
   let boardOne;

@@ -8,7 +8,7 @@ export default class Gameboard {
     this.shipsSunk = 0;
   }
 
-  createBoard() { // eslint-disable-line
+  createBoard() {
     const board = [];
 
     for (let i = 0; i < 10; i += 1) {

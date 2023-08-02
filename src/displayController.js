@@ -72,8 +72,8 @@ function boardClickHandler(e) {
   // Checks if the event target is the peg
   const cell = e.target.classList.contains('peg') ? e.target.parentElement : e.target;
 
-  const row = cell.dataset.row; // eslint-disable-line
-  const col = cell.dataset.col; // eslint-disable-line
+  const row = cell.dataset.row;
+  const col = cell.dataset.col;
   const human = getPlayer(1);
   const cpu = getPlayer(2)
 
