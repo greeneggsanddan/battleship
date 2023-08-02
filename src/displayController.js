@@ -43,14 +43,29 @@ function createBoard(player, isCPU = false) {
 }
 
 function updateDisplay() {
-  const boards = document.querySelector('.container');
+  const container = document.querySelector('.container');
+  const boards = document.createElement('div');
   const human = getPlayer(1);
   const cpu = getPlayer(2);
 
-  boards.innerHTML = '';
+  boards.classList.add('board-container');
+
+  container.innerHTML = '';
 
   boards.appendChild(createBoard(human));
   boards.appendChild(createBoard(cpu, true));
+
+  container.appendChild(boards);
+}
+
+function displayWinner(isCPU) {
+  const winner = document.createElement('p');
+  const container = document.querySelector('.container');
+
+  winner.classList.add('winner');
+  winner.textContent = isCPU ? 'Computer wins!' : 'You win!';
+
+  container.appendChild(winner);
 }
 
 function boardClickHandler(e) {
@@ -67,10 +82,6 @@ function boardClickHandler(e) {
 
   const sunkShipIndex = playRound(row, col);
   updateDisplay();
-  // if (checkGameOver()) {
-  //   displayWinner(human);
-  //   return;
-  // }
 
   setTimeout(() => {
     if (sunkShipIndex !== null) {
@@ -86,10 +97,15 @@ function boardClickHandler(e) {
     }
   }, 100);
 
+  if (checkGameOver()) {
+    displayWinner(false);
+    return;
+  }
+
   setTimeout(() => {
     cpuRound();
     updateDisplay();
-    // if (checkGameOver()) displayWinner(cpu);
+    if (checkGameOver()) displayWinner(true);
   }, 500);
 }
 
@@ -103,8 +119,4 @@ export default function startGame() {
   updateDisplay();
 
   document.addEventListener('click', boardClickHandler);
-}
-
-function displayWinner(player) {
-
 }
